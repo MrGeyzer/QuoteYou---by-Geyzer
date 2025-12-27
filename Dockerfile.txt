@@ -1,0 +1,27 @@
+FROM python:3.10-slim
+
+# Встановлюємо системні залежності та шрифт Noto Color Emoji
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    fonts-noto-color-emoji \
+    fontconfig \
+    && rm -rf /var/lib/apt/lists/*
+
+# Оновлюємо кеш шрифтів
+RUN fc-cache -fv
+
+WORKDIR /app
+
+# Копіюємо файли
+COPY . .
+
+# Встановлюємо бібліотеки Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Встановлюємо Playwright
+RUN playwright install chromium
+RUN playwright install-deps
+
+# Запускаємо
+CMD ["python", "main.py"]

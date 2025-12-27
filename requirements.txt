@@ -1,0 +1,4 @@
+aiogram
+playwright
+pillow
+aiohttp
